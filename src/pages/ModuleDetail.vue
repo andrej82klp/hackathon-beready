@@ -62,77 +62,11 @@
         </div>
 
         <!-- Slide-based Content or Regular Content -->
-        <div v-if="moduleSlides.length > 0">
-          <SlideNavigation 
-            :slides="moduleSlides" 
+        <div v-if="moduleSlides.content">
+          <SlideNavigation
             :module="module"
             @start-test="startTest"
           />
-        </div>
-        
-        <!-- Regular Module Content (fallback) -->
-        <div v-else>
-          <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8">
-            <div class="prose prose-lg max-w-none" v-html="module.content"></div>
-
-            <!-- Video Placeholder -->
-            <div class="mt-8 bg-gray-100 rounded-lg p-8 text-center">
-              <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-teal-800" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-              <h3 class="text-xl font-heading font-bold text-teal-800 mb-2">
-                Video Demonstration
-              </h3>
-              <p class="text-gray-600 mb-4">
-                Watch our step-by-step video guide for {{ module.title.toLowerCase() }}.
-              </p>
-              <button class="bg-teal-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors duration-200">
-                Play Video
-              </button>
-            </div>
-          </div>
-
-          <!-- Test Section -->
-          <div class="bg-yellow-50 rounded-xl border-2 border-yellow-200 p-8 text-center">
-            <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span class="text-3xl">🏆</span>
-            </div>
-            
-            <h2 class="text-2xl font-heading font-bold text-teal-800 mb-4">
-              Ready to Test Your Knowledge?
-            </h2>
-            
-            <p class="text-gray-700 mb-6 max-w-2xl mx-auto">
-              Complete the assessment to earn your {{ module.badge_name }} badge and demonstrate your mastery of these essential skills.
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                v-if="isAuthenticated"
-                @click="startTest"
-                class="bg-yellow-400 text-teal-800 px-8 py-4 rounded-lg text-lg font-bold hover:bg-yellow-300 transition-colors duration-200 shadow-lg"
-              >
-                {{ moduleProgress?.completed ? 'Retake Test' : 'Take the Test to Earn Your Badge' }}
-              </button>
-              
-              <router-link
-                v-else
-                to="/register"
-                class="bg-yellow-400 text-teal-800 px-8 py-4 rounded-lg text-lg font-bold hover:bg-yellow-300 transition-colors duration-200 shadow-lg"
-              >
-                Sign Up to Take Test & Earn Badge
-              </router-link>
-              
-              <router-link
-                to="/learn"
-                class="bg-gray-200 text-gray-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-300 transition-colors duration-200"
-              >
-                Back to Modules
-              </router-link>
-            </div>
-          </div>
         </div>
 
         <!-- Test Modal -->
