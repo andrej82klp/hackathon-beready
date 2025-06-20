@@ -62,9 +62,10 @@
         </div>
 
         <!-- Slide-based Content or Regular Content -->
-        <div v-if="moduleSlides.content">
+        <div v-if="moduleSlides?.slides">
           <SlideNavigation
             :module="module"
+            :slides="moduleSlides.slides"
             @start-test="startTest"
           />
         </div>
@@ -110,6 +111,7 @@ const { earnBadge } = useAchievements()
 const module = ref<Module | null>(null)
 const loading = ref(true)
 const showTest = ref(false)
+const moduleSlides = ref<{ slides?: any[] } | null>(null)
 
 const moduleProgress = computed(() => {
   if (!user.value || !module.value) return null
@@ -124,6 +126,16 @@ onMounted(async () => {
     const { data, error } = await fetchModuleById(moduleId)
     if (error) throw error
     module.value = data
+    
+    // Parse module content to extract slides
+    if (data?.content) {
+      try {
+        moduleSlides.value = JSON.parse(data.content)
+      } catch (parseError) {
+        console.error('Error parsing module content:', parseError)
+        moduleSlides.value = null
+      }
+    }
     
     // Start tracking this module if user is authenticated
     if (isAuthenticated.value && user.value) {
