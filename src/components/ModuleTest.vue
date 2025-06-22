@@ -46,8 +46,8 @@
       <!-- Progress Bar -->
       <div class="mb-6">
         <div class="flex justify-between text-sm text-gray-600 mb-2">
-          <span v-if="currentQuestion <= questions.length">
-            Question {{ currentQuestion + 1 }} offf {{ questions.length }}
+          <span v-if="currentQuestion != questions.length">
+            Question {{ currentQuestion + 1 }} of {{ questions.length }}
           </span>
           <span>{{ Math.round((currentQuestion / questions.length) * 100) }}%</span>
         </div>
