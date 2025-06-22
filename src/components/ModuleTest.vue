@@ -47,7 +47,7 @@
       <div class="mb-6">
         <div class="flex justify-between text-sm text-gray-600 mb-2">
           <span>Question {{ currentQuestion + 1 }} of {{ questions.length }}</span>
-          <span>{{ Math.round(((currentQuestion + 1) / questions.length) * 100) }}%</span>
+          <span>{{ Math.round((currentQuestion / questions.length) * 100) }}%</span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
           <div
