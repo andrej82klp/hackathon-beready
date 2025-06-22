@@ -52,7 +52,7 @@
         <div class="w-full bg-gray-200 rounded-full h-2">
           <div
             class="bg-yellow-400 h-2 rounded-full transition-all duration-300"
-            :style="{ width: ((currentQuestion + 1) / questions.length) * 100 + '%' }"
+            :style="{ width: (currentQuestion / questions.length) * 100 + '%' }"
           ></div>
         </div>
       </div>
