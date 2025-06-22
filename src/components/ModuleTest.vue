@@ -46,13 +46,14 @@
       <!-- Progress Bar -->
       <div class="mb-6">
         <div class="flex justify-between text-sm text-gray-600 mb-2">
-          <span>Question {{ currentQuestion + 1 }} of {{ questions.length }}</span>
-          <span>{{ Math.round((currentQuestion / questions.length) * 100) }}%</span>
+          <span v-if="currentQuestion < questions.length">Question {{ currentQuestion + 1 }} of {{ questions.length }}</span>
+          <span v-else></span>
+          <span>{{ currentQuestion >= questions.length ? '100' : Math.round(((currentQuestion + 1) / questions.length) * 100) }}%</span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
           <div
             class="bg-yellow-400 h-2 rounded-full transition-all duration-300"
-            :style="{ width: (currentQuestion / questions.length) * 100 + '%' }"
+            :style="{ width: currentQuestion >= questions.length ? '100%' : ((currentQuestion + 1) / questions.length) * 100 + '%' }"
           ></div>
         </div>
       </div>
