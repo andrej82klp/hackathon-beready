@@ -131,7 +131,7 @@
               </div>
             </div>
             <blockquote class="text-gray-700 italic">
-              "{{ story.excerpt }}"
+              "{{ story.story }}"
             </blockquote>
           </div>
         </div>
