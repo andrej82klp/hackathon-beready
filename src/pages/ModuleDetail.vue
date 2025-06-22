@@ -159,63 +159,26 @@ const startTest = () => {
 
 const closeTest = () => {
   showTest.value = false
-  currentQuestion.value = 0
-  selectedAnswer.value = null
-  userAnswers.value = []
 }
 
-const selectAnswer = (index: number) => {
-  selectedAnswer.value = index
-}
-
-const nextQuestion = () => {
-  if (selectedAnswer.value !== null) {
-    userAnswers.value[currentQuestion.value] = selectedAnswer.value
-    currentQuestion.value++
-    selectedAnswer.value = null
+const handleTestCompleted = async (score: number, moduleId: string) => {
+  if (!isAuthenticated.value || !user.value || !module.value) {
+    console.warn('User not authenticated or module not loaded')
+    return
   }
-}
-
-const previousQuestion = () => {
-  if (currentQuestion.value > 0) {
-    currentQuestion.value--
-    selectedAnswer.value = userAnswers.value[currentQuestion.value] || null
-  }
-}
-
-const finishTest = async () => {
-  if (selectedAnswer.value !== null) {
-    userAnswers.value[currentQuestion.value] = selectedAnswer.value
-  }
-
-  submittingTest.value = true
 
   try {
-    // Calculate score
-    let correct = 0
-    userAnswers.value.forEach((answer, index) => {
-      if (answer === testQuestions.value[index].correct) {
-        correct++
-      }
-    })
+    // Complete the module with the score
+    await completeModule(user.value.id, moduleId, score)
     
-    testScore.value = Math.round((correct / testQuestions.value.length) * 100)
-    currentQuestion.value = testQuestions.value.length
-
-    // Save progress and award badge if passing score and user is authenticated
-    if (isAuthenticated.value && user.value && module.value) {
-      // Complete the module
-      await completeModule(user.value.id, module.value.id, testScore.value)
-      
-      // Award badge if passing score
-      if (testScore.value >= 70) {
-        await earnBadge(user.value.id, module.value.badge_name, module.value.id)
-      }
+    // Award badge if passing score (70% or higher)
+    if (score >= 70) {
+      await earnBadge(user.value.id, module.value.badge_name, module.value.id)
     }
+    
+    console.log(`Module completed with score: ${score}%`)
   } catch (error) {
-    console.error('Error submitting test:', error)
-  } finally {
-    submittingTest.value = false
+    console.error('Error saving test completion:', error)
   }
 }
 </script>
