@@ -250,7 +250,8 @@ export const storyService = {
         email,
         story,
         location,
-        approved: false // Stories need approval
+        approved: false, // Stories need approval - required by RLS policy
+        featured: false  // Explicitly set featured to false
       })
       .select()
       .single()

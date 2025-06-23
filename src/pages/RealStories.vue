@@ -269,14 +269,12 @@ const submitStoryForm = async () => {
   submitting.value = true
   
   try {
-    const { data, error } = await submitStory(
+    await submitStory(
       storyForm.value.name,
       storyForm.value.email,
       storyForm.value.story,
       storyForm.value.location || undefined
     )
-    
-    if (error) throw error
     
     submitSuccess.value = true
     
@@ -287,7 +285,9 @@ const submitStoryForm = async () => {
     
   } catch (error) {
     console.error('Error submitting story:', error)
-    alert('There was an error submitting your story. Please try again.')
+    // Show more specific error message
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+    alert(`There was an error submitting your story: ${errorMessage}. Please try again.`)
   } finally {
     submitting.value = false
   }

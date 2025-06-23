@@ -36,12 +36,14 @@ export const useStories = () => {
 
   const submitStory = async (name: string, email: string, story: string, location?: string) => {
     try {
+      // Ensure we're submitting with approved: false as required by RLS policy
       const { data, error } = await storyService.submitStory(name, email, story, location)
       if (error) throw error
       return { data, error: null }
     } catch (error) {
       console.error('Error submitting story:', error)
-      return { data: null, error }
+      // Re-throw the error so the component can handle it properly
+      throw error
     }
   }
 
