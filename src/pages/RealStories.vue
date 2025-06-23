@@ -13,7 +13,7 @@
       </div>
 
       <!-- Share Story CTA -->
-      <div class="bg-yellow-50 rounded-2xl border-2 border-yellow-200 p-8 mb-12 text-center">
+      <div v-if="isAuthenticated" class="bg-yellow-50 rounded-2xl border-2 border-yellow-200 p-8 mb-12 text-center">
         <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
           <span class="text-3xl">✍️</span>
         </div>
@@ -30,6 +30,25 @@
         >
           Share Your Story
         </button>
+      </div>
+
+      <!-- Authentication Required Message -->
+      <div v-if="!isAuthenticated" class="bg-blue-50 rounded-2xl border-2 border-blue-200 p-8 mb-12 text-center">
+        <div class="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-3xl">🔐</span>
+        </div>
+        <h2 class="text-2xl font-heading font-bold text-teal-800 mb-4">
+          Share Your Story
+        </h2>
+        <p class="text-gray-700 mb-6 max-w-2xl mx-auto">
+          To share your first aid story and inspire others, please log in to your account first.
+        </p>
+        <router-link
+          to="/login"
+          class="bg-blue-400 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-300 transition-colors duration-200 inline-block"
+        >
+          Log In to Share
+        </router-link>
       </div>
 
       <!-- Loading State -->
@@ -93,7 +112,7 @@
 
       <!-- Share Story Modal -->
       <div
-        v-if="showShareForm"
+        v-if="showShareForm && isAuthenticated"
         class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4"
       >
         <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -112,7 +131,7 @@
               </button>
             </div>
 
-            <form @submit.prevent="submitStory" class="space-y-6">
+            <form @submit.prevent="submitStoryForm" class="space-y-6">
               <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
                   Your Name
@@ -229,8 +248,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useStories } from '../stores/stories'
+import { useAuth } from '../stores/auth'
 
 const { stories, loading, fetchStories, submitStory } = useStories()
+const { isAuthenticated } = useAuth()
 
 const showShareForm = ref(false)
 const submitting = ref(false)
