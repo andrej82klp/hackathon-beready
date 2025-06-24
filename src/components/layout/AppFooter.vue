@@ -76,6 +76,5 @@
           © {{ new Date().getFullYear() }} BeReady. All rights reserved. Empowering communities through first aid education.
         </p>
       </div>
-    </div>
   </footer>
 </template>
