@@ -249,6 +249,7 @@
 import { ref, onMounted } from 'vue'
 import { useStories } from '../stores/stories'
 import { useAuth } from '../stores/auth'
+import { supabase } from '../lib/supabase'
 
 const { stories, loading, fetchStories, submitStory } = useStories()
 const { isAuthenticated } = useAuth()
@@ -290,6 +291,12 @@ const submitStoryForm = async () => {
   submitting.value = true
   
   try {
+    // Debug: Log current session and user
+    const session = await supabase.auth.getSession();
+    console.log('Supabase session:', session);
+    const user = session.data?.session?.user;
+    console.log('Supabase user:', user);
+
     await submitStory(
       storyForm.value.name,
       storyForm.value.email,
