@@ -4,9 +4,9 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Brand -->
         <div class="col-span-1 md:col-span-2">
-              <span class="sr-only">X</span>
+          <div class="flex items-center space-x-2 mb-4">
             <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              <span class="text-teal-800 font-bold text-xl">B</span>
             </div>
             <span class="text-xl font-heading font-bold">BeReady</span>
           </div>
@@ -76,5 +76,6 @@
           © {{ new Date().getFullYear() }} BeReady. All rights reserved. Empowering communities through first aid education.
         </p>
       </div>
+    </div>
   </footer>
 </template>
