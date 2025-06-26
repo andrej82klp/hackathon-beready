@@ -28,6 +28,9 @@
         <!-- User Menu / Auth -->
         <div class="hidden md:flex items-center space-x-4">
           <div v-if="isAuthenticated" class="flex items-center space-x-4">
+            <div v-if="currentPlan" class="text-sm text-gray-600">
+              Plan: <span class="font-medium text-teal-800">{{ currentPlan }}</span>
+            </div>
             <router-link
               to="/dashboard"
               class="text-gray-700 hover:text-teal-800 font-medium transition-colors duration-200"
@@ -138,9 +141,11 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../../stores/auth'
+import { useStripe } from '../../stores/stripe'
 
 const router = useRouter()
 const { isAuthenticated, signOut } = useAuth()
+const { currentPlan, fetchSubscription } = useStripe()
 const mobileMenuOpen = ref(false)
 
 const navigationLinks = [
@@ -154,5 +159,10 @@ const handleSignOut = async () => {
   await signOut()
   mobileMenuOpen.value = false
   router.push('/')
+}
+
+// Fetch subscription data when component mounts
+if (isAuthenticated.value) {
+  fetchSubscription()
 }
 </script>

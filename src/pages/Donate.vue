@@ -244,21 +244,21 @@
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <div class="text-3xl mb-2">📢</div>
-            <h3 class="font-semibold mb-2">Spread the Word</h3>
-            <p class="text-sm text-gray-200">Share BeReady with friends and family</p>
+      <!-- Security Notice -->
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+            </svg>
           </div>
-          
-          <div>
-            <div class="text-3xl mb-2">✍️</div>
-            <h3 class="font-semibold mb-2">Share Your Story</h3>
-            <p class="text-sm text-gray-200">Inspire others with your first aid experience</p>
-          </div>
-          
-          <div>
-            <div class="text-3xl mb-2">💡</div>
-            <h3 class="font-semibold mb-2">Give Feedback</h3>
-            <p class="text-sm text-gray-200">Help us improve our platform and content</p>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-green-800">
+              Your donation is secure
+            </h3>
+            <p class="text-sm text-green-700 mt-1">
+              All payments are processed securely through Stripe. You will receive a receipt for your records.
+            </p>
           </div>
         </div>
       </div>
@@ -268,6 +268,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useStripe } from '../stores/stripe'
+import { stripeProducts } from '../stripe-config'
+
+const { createCheckoutSession, loading: stripeLoading } = useStripe()
 
 const donationType = ref<'one-time' | 'monthly'>('one-time')
 const selectedAmount = ref<number | null>(25)
@@ -301,28 +305,14 @@ const processDonation = async () => {
   processing.value = true
 
   try {
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    // Use the donation product from stripe-config
+    const donationProduct = stripeProducts.find(p => p.name === 'Donation')
     
-    // In a real app, this would integrate with a payment processor like Stripe
-    console.log('Processing donation:', {
-      amount: finalAmount.value,
-      type: donationType.value,
-      donor: donorInfo.value
-    })
-
-    alert(`Thank you for your ${donationType.value} donation of $${finalAmount.value}! Your support helps keep first aid education free for everyone.`)
-    
-    // Reset form
-    selectedAmount.value = 25
-    customAmount.value = null
-    donorInfo.value = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      anonymous: false,
-      newsletter: true
+    if (!donationProduct) {
+      throw new Error('Donation product not found')
     }
+
+    await createCheckoutSession(donationProduct)
 
   } catch (error) {
     console.error('Donation processing error:', error)
